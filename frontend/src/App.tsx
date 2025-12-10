@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { AnalyzeResponse, WordItem } from "./types";
+import type { AnalyzeResponse, WordItem } from "./types";
 import { WordCloud3D } from "./components/WordCloud3D";
 
 const SAMPLE_URLS: string[] = [
@@ -43,7 +43,7 @@ const App: React.FC = () => {
     <div
       style={{
         display: "flex",
-        height: "100vh",
+        height: "100vh", // full viewport height
         flexDirection: "column",
         background: "#050816",
         color: "#f5f5f5",
@@ -137,7 +137,7 @@ const App: React.FC = () => {
         <div
           style={{
             flex: 1,
-            minHeight: "60vh",
+            height: "calc(100vh - 80px)", // fit under header
             borderRadius: "8px",
             overflow: "hidden",
             border: "1px solid #111",
@@ -160,7 +160,9 @@ const App: React.FC = () => {
               }}
             >
               {loading && "Building topics and word cloud..."}
-              {!loading && !words && "Enter a URL and click Analyze to generate a 3D word cloud."}
+              {!loading &&
+                !words &&
+                "Enter a URL and click Analyze to generate a 3D word cloud."}
               {!loading && error && "Something went wrong. Try another URL."}
             </div>
           )}

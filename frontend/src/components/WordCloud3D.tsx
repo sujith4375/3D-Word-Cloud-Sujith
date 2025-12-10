@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Text3D, Center, Float } from "@react-three/drei";
 import * as THREE from "three";
-import { WordItem } from "../types";
+import type { WordItem } from "../types";
 
 interface Props {
   words: WordItem[];
@@ -11,14 +11,14 @@ interface Props {
 const COLORS = ["#22c55e", "#38bdf8", "#eab308", "#f97316", "#a855f7"];
 
 function mapWeightToSize(weight: number): number {
-  // weight ~ [0.2, 1.0]
-  return 0.5 + weight * 1.5;
+  // Smaller base size so words don't overlap as much
+  return 0.3 + weight * 1.0;
 }
 
 function mapWeightToColor(weight: number): string {
   const idx = Math.min(
     COLORS.length - 1,
-    Math.floor((weight - 0.2) / 0.8 * COLORS.length)
+    Math.floor(((weight - 0.2) / 0.8) * COLORS.length)
   );
   return COLORS[idx];
 }
@@ -39,8 +39,9 @@ function generateSpherePositions(count: number, radius: number): THREE.Vector3[]
 }
 
 const WordCloudContent: React.FC<Props> = ({ words }) => {
+  // Larger radius to spread words out more
   const positions = useMemo(
-    () => generateSpherePositions(words.length, 8),
+    () => generateSpherePositions(words.length, 12),
     [words.length]
   );
 
