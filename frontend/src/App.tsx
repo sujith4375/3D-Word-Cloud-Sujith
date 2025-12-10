@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { AnalyzeResponse, WordItem } from "./types";
+import { WordCloud3D } from "./components/WordCloud3D";
 
 const SAMPLE_URLS: string[] = [
   "https://www.bbc.com/news",
@@ -22,9 +23,7 @@ const App: React.FC = () => {
     try {
       const resp = await fetch(`${BACKEND_URL}/analyze`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ url }),
       });
       if (!resp.ok) {
@@ -130,29 +129,41 @@ const App: React.FC = () => {
 
           {words && !error && (
             <p style={{ marginTop: "0.75rem", fontSize: "0.85rem", opacity: 0.9 }}>
-              Extracted {words.length} keywords.
+              Extracted {words.length} keywords. Drag to rotate, scroll to zoom.
             </p>
           )}
         </div>
 
-        <div style={{ flex: 1, minHeight: "60vh", borderRadius: "8px", overflow: "hidden", border: "1px solid #111", background: "#020617" }}>
-          {/* 3D canvas will go here later */}
-          <div
-            style={{
-              height: "100%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontSize: "0.95rem",
-              opacity: 0.7,
-              textAlign: "center",
-              padding: "1rem",
-            }}
-          >
-            {loading && "Building topics and word cloud..."}
-            {!loading && !words && "Enter a URL and click Analyze to generate a 3D word cloud."}
-            {!loading && words && "3D visualization coming next step..."}
-          </div>
+        <div
+          style={{
+            flex: 1,
+            minHeight: "60vh",
+            borderRadius: "8px",
+            overflow: "hidden",
+            border: "1px solid #111",
+            background: "#020617",
+          }}
+        >
+          {words && !loading && !error ? (
+            <WordCloud3D words={words} />
+          ) : (
+            <div
+              style={{
+                height: "100%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: "0.95rem",
+                opacity: 0.7,
+                textAlign: "center",
+                padding: "1rem",
+              }}
+            >
+              {loading && "Building topics and word cloud..."}
+              {!loading && !words && "Enter a URL and click Analyze to generate a 3D word cloud."}
+              {!loading && error && "Something went wrong. Try another URL."}
+            </div>
+          )}
         </div>
       </div>
     </div>
