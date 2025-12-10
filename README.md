@@ -1,2 +1,3 @@
-# 3D-Word-Cloud-Sujith
-Demonstrate ability to integrate a custom UI with a backend pipeline that does light data mining and ML/NLP.
+# 3D-Word-Cloud-YourName
+
+Interactive 3D word cloud built with React Three Fiber (frontend) and FastAPI (backend).
